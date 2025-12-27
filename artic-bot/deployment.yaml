@@ -15,4 +15,7 @@ spec:
       containers:
         - name: bot
           image: ghcr.io/week-book/artic-telegram-bot:sha-3045ae5aa3342ab0536d696427952c9fbe046d5e
+          envFrom:
+            - secretRef:
+                name: artic-bot-secrets
           imagePullPolicy: IfNotPresent
