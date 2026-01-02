@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - deployment.yaml
+  - secrets/artic-bot-sealed.yaml
 images:
   - name: ghcr.io/week-book/artic-telegram-bot
     newTag: sha-9016e6a25f017c079c4f669592ae182a3fbf797e
