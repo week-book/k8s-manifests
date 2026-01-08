@@ -5,8 +5,8 @@ PUBKEY    := sealed-secrets.pub.pem
 
 BOT ?=
 
-ENV_FILE    := $(BOT)/secrets/$(BOT).env
-SEALED_FILE := $(BOT)/secrets/$(BOT)-sealed.yaml
+ENV_FILE    := secrets/$(BOT).env
+SEALED_FILE := secrets/$(BOT)-sealed.yaml
 SECRET_NAME := $(BOT)-secrets
 
 check:
