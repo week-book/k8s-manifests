@@ -19,8 +19,3 @@ spec:
             - secretRef:
                 name: affiche-bot-secrets
           imagePullPolicy: IfNotPresent
-          env:
-            - name: REDIS_URL
-              value: redis://affiche-redis:6379
-            - name: TELEGRAM_BOT_USERNAME
-              value: @WeekBookRu_bot
