@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: affiche-bot
+      annotations:
+        rolloutTimestamp: "2026-01-09T12:34:56"
     spec:
       containers:
         - name: bot
