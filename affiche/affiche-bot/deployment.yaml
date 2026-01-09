@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: affiche-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: affiche-bot
+  template:
+    metadata:
+      labels:
+        app: affiche-bot
+    spec:
+      containers:
+        - name: bot
+          image: ghcr.io/week-book/affiche-telegram-bot
+          envFrom:
+            - secretRef:
+                name: affiche-bot-secrets
+          imagePullPolicy: IfNotPresent
