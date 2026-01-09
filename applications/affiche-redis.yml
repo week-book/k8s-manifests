@@ -4,6 +4,7 @@ metadata:
   name: affiche-redis
   namespace: argocd
 spec:
+  project: default
   source:
     repoURL: https://github.com/week-book/k8s-manifests.git
     targetRevision: main
