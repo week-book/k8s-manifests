@@ -1,0 +1,12 @@
+kind: Application
+metadata:
+  name: affiche-redis
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/week-book/k8s-manifests.git
+    targetRevision: main
+    path: affiche/affiche-redis
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
