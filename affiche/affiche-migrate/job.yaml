@@ -21,6 +21,6 @@ spec:
               up
         envFrom:
           - secretRef:
-              name: affiche-api-secrets
+              name: affiche-migrate-secrets
       restartPolicy: Never
   backoffLimit: 0
