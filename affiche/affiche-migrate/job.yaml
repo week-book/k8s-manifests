@@ -4,7 +4,7 @@ metadata:
   name: affiche-migrate
   annotations:
     argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded,HookFailed
     run-id: "2026-01-10-1"
 spec:
   template:
