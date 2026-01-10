@@ -4,8 +4,7 @@ resources:
   - affiche-api
   - affiche-redis
   - affiche-migrate
-  - affiche-db
-  - secrets/affiche-api-sealed.yaml
+  - affiche-bd
 images:
   - name: ghcr.io/week-book/affiche-api
     newTag: sha-147596a239fec2b237f93d419ee48e2d8303cc66
