@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: affiche-db
+spec:
+  serviceName: affiche-db
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: affiche-db
+
+  template:
+    metadata:
+      labels:
+        app: affiche-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 5432
+
+          envFrom:
+            - secretRef:
+                name: affiche-db-secrets
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi

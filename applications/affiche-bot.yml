@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/week-book/k8s-manifests.git
     targetRevision: main
-    path: affiche/affiche-bot
+    path: affiche-bot
   destination:
     server: https://kubernetes.default.svc
     namespace: default

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: affiche-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: affiche-api
+  template:
+    metadata:
+      labels:
+        app: affiche-api
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/week-book/affiche-api
+          envFrom:
+            - secretRef:
+                name: affiche-api-secrets
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: IfNotPresent

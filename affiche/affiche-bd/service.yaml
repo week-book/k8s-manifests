@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: affiche-db
+spec:
+  type: ClusterIP
+  selector:
+    app: affiche-db
+  ports:
+    - port: 5432
+      targetPort: 5432
