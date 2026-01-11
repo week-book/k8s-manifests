@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - secrets/affiche-bot-sealed.yaml
+  - sec/affiche-migrate-sealed.yaml
 images:
   - name: ghcr.io/week-book/affiche-telegram-bot
     newTag: sha-3989d82fa744dd028a7843e542489ab83c029432
