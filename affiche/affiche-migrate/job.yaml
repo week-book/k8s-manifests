@@ -22,5 +22,23 @@ spec:
         envFrom:
           - secretRef:
               name: affiche-migrate-secrets
+        env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: affiche-db-secrets
+                key: POSTGRES_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: affiche-db-secrets
+                key: POSTGRES_PASSWORD
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: affiche-db-secrets
+                key: POSTGRES_DB
+          - name: DB_HOST
+            value: affiche-db
       restartPolicy: Never
   backoffLimit: 3
