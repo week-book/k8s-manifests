@@ -4,7 +4,7 @@ resources:
   - affiche-api
   - affiche-redis
   - affiche-migrate
-  - affiche-bd
+  - affiche-db
 images:
   - name: ghcr.io/week-book/affiche-api
     newTag: sha-d63a4e4370edaad9ee3e1ad2bc156ee377f8c158

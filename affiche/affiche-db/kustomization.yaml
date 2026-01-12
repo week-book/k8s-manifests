@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - service.yaml
   - statefulset.yaml
-  - secrets/affiche-bd-sealed.yaml
+  - secrets/affiche-db-sealed.yaml
