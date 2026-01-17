@@ -4,7 +4,7 @@ metadata:
   name: affiche-db
 spec:
   serviceName: affiche-db
-  replicas: 1
+  replicas: 0
 
   selector:
     matchLabels:
