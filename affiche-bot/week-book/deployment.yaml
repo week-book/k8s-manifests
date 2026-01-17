@@ -19,5 +19,5 @@ spec:
           image: ghcr.io/week-book/affiche-telegram-bot
           envFrom:
             - secretRef:
-                name: affiche-bot-secrets
+                name: week-book-secrets
           imagePullPolicy: IfNotPresent
