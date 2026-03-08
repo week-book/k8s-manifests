@@ -5,4 +5,4 @@ resources:
   - service.yaml
 images:
   - name: ghcr.io/week-book/web-site-frontend
-    newTag: latest
+    newTag: sha-e2305c9effc058d523b89092e8a4a2f5118d1072
