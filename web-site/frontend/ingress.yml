@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-site-frontend
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: web-site.week-book.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-site-frontend
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - web-site.week-book.ru
+      secretName: web-site-frontend-tls
