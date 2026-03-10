@@ -6,4 +6,4 @@ resources:
   - ingress.yml
 images:
   - name: ghcr.io/week-book/web-site-frontend
-    newTag: sha-508164f4a4d49b067d63f6478d837c12645a059b
+    newTag: sha-36632dece0491e88c32f3936b24dd7b2fc93a72b
