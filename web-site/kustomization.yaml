@@ -4,4 +4,4 @@ resources:
   - frontend
 images:
   - name: ghcr.io/week-book/affiche-api
-    newTag: sha-d63a4e4370edaad9ee3e1ad2bc156ee377f8c158
+    newTag: sha-36632dece0491e88c32f3936b24dd7b2fc93a72b
