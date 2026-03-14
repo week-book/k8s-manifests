@@ -5,4 +5,4 @@ resources:
   - statefulset.yaml
   - service.yaml
   - ingress.yaml
-  - secrets/minio-sealed.yaml
+  - secrets/web-site-minio-sealed.yaml
