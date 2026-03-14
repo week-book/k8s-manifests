@@ -8,8 +8,8 @@ PARENT ?=
 
 FULL_RESOURCE_NAME :=$(PARENT)-$(RESOURCE)
 TARGET_PATH  := $(PARENT)/$(RESOURCE)
-ENV_FILE    := $(TARGET_PATH)/secrets/$(RESOURCE).env
-SEALED_FILE := $(TARGET_PATH)/secrets/$(RESOURCE)-sealed.yaml
+ENV_FILE    := $(TARGET_PATH)/secrets/$(FULL_RESOURCE_NAME).env
+SEALED_FILE := $(TARGET_PATH)/secrets/$(FULL_RESOURCE_NAME)-sealed.yaml
 SECRET_NAME := $(RESOURCE)-secrets
 
 check:

@@ -17,6 +17,9 @@ spec:
           image: ghcr.io/week-book/web-site-frontend
           ports:
             - containerPort: 80
+          env:
+            - name: VITE_S3_POSTS_URL
+              value: "https://s3.week-book.ru/posts"
           livenessProbe:
             httpGet:
               path: /
@@ -32,3 +35,4 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 2
           imagePullPolicy: IfNotPresent
+
