@@ -8,6 +8,34 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
+    - host: week-book.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-site-frontend
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - week-book.ru
+      secretName: week-book-tls
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-site-frontend-redirect
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/permanent-redirect: "https://week-book.ru$request_uri"
+    nginx.ingress.kubernetes.io/permanent-redirect-code: "301"
+spec:
+  ingressClassName: nginx
+  rules:
     - host: web-site.week-book.ru
       http:
         paths:
