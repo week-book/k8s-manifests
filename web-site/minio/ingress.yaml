@@ -26,20 +26,7 @@ spec:
                 name: minio
                 port:
                   number: 9000
-    - host: minio.week-book.ru
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: minio
-                port:
-                  number: 9001
   tls:
     - hosts:
         - s3.week-book.ru
       secretName: minio-s3-tls
-    - hosts:
-        - minio.week-book.ru
-      secretName: minio-console-tls
