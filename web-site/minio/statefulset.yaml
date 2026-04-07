@@ -31,6 +31,12 @@ spec:
               containerPort: 9000
             - name: console
               containerPort: 9001
+              
+          env:
+            - name: MINIO_SERVER_URL
+              value: "https://s3.week-book.ru"
+            - name: MINIO_BROWSER_REDIRECT_URL
+              value: "http://minio.local:9001"
 
           envFrom:
             - secretRef:
