@@ -3,6 +3,4 @@ kind: Kustomization
 resources:
   - frontend
   - minio
-images:
-  - name: ghcr.io/week-book/affiche-api
-    newTag: sha-36632dece0491e88c32f3936b24dd7b2fc93a72b
+  - redirect
