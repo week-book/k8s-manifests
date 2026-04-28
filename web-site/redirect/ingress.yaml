@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: p.week-book.ru
+    - host: go.week-book.ru
       http:
         paths:
           - path: /
@@ -22,5 +22,5 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - p.week-book.ru
+        - go.week-book.ru
       secretName: redirect-service-tls
