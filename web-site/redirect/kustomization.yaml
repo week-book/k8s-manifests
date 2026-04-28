@@ -6,4 +6,4 @@ resources:
   - ingress.yaml
 images:
   - name: ghcr.io/week-book/redirect-service
-    newTag: sha-b45095ae3118f26c95ab79ae17a8160adc8a3ae8
+    newTag: sha-4f7499b9a130af5fb1a9ad26c7297bfad1ddc748
