@@ -5,5 +5,5 @@ resources:
   - service.yaml
   - ingress.yaml
 images:
-  - name: ghcr.io/week-book/redirect-service
-    newTag: sha-4f7499b9a130af5fb1a9ad26c7297bfad1ddc748
+  - name: ghcr.io/week-book/sudoku-frontend
+    newTag: latest

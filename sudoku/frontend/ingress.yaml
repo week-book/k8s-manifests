@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: redirect-service
+  name: sudoku-frontend
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
@@ -10,17 +10,17 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: go.week-book.ru
+    - host: sudoku.week-book.ru
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: redirect-service
+                name: sudoku-frontend
                 port:
                   number: 80
   tls:
     - hosts:
-        - go.week-book.ru
-      secretName: redirect-service-tls
+        - sudoku.week-book.ru
+      secretName: sudoku-tls
