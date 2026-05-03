@@ -6,4 +6,4 @@ resources:
   - ingress.yaml
 images:
   - name: ghcr.io/week-book/sudoku-frontend
-    newTag: latest
+    newTag: sha-87f7ef8870d816ab70735704ee99201ca6d3db08
