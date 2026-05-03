@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sudoku-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sudoku-frontend
+  template:
+    metadata:
+      labels:
+        app: sudoku-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/week-book/sudoku-frontend
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          imagePullPolicy: IfNotPresent
