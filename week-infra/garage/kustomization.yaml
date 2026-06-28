@@ -6,4 +6,4 @@ resources:
   - statefulset.yaml
   - service.yaml
   - ingress.yaml
-  - secrets/week-infra-garage-sealed.yaml
+  - secrets/garage-sealed.yaml
