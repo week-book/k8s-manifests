@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/week-book/k8s-manifests.git
+    repoURL: https://github.com/week-book/k8s-manifests
     targetRevision: main
     path: week-infra
   destination:
@@ -18,3 +18,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
