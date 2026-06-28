@@ -24,7 +24,7 @@ spec:
               name: redis
           envFrom:
             - secretRef:
-                name: week-infra-redis
+                name: redis-secrets
           command:
             - sh
             - -c
