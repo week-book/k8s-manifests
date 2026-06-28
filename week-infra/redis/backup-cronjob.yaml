@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: redis-backup
+  namespace: week-infra
+spec:
+  schedule: "0 3 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: redis-dump
+              image: redis:7-alpine
+              envFrom:
+                - secretRef:
+                    name: week-infra-redis
+              command:
+                - sh
+                - -c
+                - |
+                  set -e
+                  STAMP=$(date +%Y-%m-%d_%H-%M-%S)
+                  FILE="/backup/redis-${STAMP}.rdb"
+                  echo "Dumping RDB snapshot to ${FILE}"
+                  redis-cli -h redis -a "$REDIS_PASSWORD" --rdb "${FILE}"
+                  gzip "${FILE}"
+                  echo "Dump done: $(ls -lh ${FILE}.gz)"
+                  cd /backup
+                  ls -1t redis-*.rdb.gz | tail -n +8 | xargs -r rm -f
+                  echo "Remaining backups:"
+                  ls -lh /backup
+              volumeMounts:
+                - name: backup-storage
+                  mountPath: /backup
+          volumes:
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: redis-backup
