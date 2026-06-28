@@ -1,4 +1,4 @@
-NAMESPACE := default
+NAMESPACE ?= $(PARENT)
 PUBKEY    := sealed-secrets.pub.pem
 
 RESOURCE ?=
@@ -9,8 +9,8 @@ PORT     ?=
 
 FULL_RESOURCE_NAME := $(PARENT)-$(RESOURCE)
 TARGET_PATH        := $(PARENT)/$(RESOURCE)
-ENV_FILE           := $(TARGET_PATH)/secrets/$(FULL_RESOURCE_NAME).env
-SEALED_FILE        := $(TARGET_PATH)/secrets/$(FULL_RESOURCE_NAME)-sealed.yaml
+ENV_FILE           := $(TARGET_PATH)/secrets/$(RESOURCE).env
+SEALED_FILE        := $(TARGET_PATH)/secrets/$(RESOURCE)-sealed.yaml
 SECRET_NAME        := $(RESOURCE)-secrets
 
 .PHONY: help seal create check secret status pubkey-update scaffold scaffold-check
@@ -144,7 +144,7 @@ scaffold: scaffold-check ## Создать манифесты для новог�
 			'          image: $(_IMAGE)' \
 			'          envFrom:' \
 			'            - secretRef:' \
-			'                name: $(_NAME)-secrets' \
+			'                name: $(RESOURCE)-secrets' \
 			'          ports:' \
 			'            - containerPort: $(_PORT)' \
 			'          livenessProbe:' \
@@ -184,7 +184,7 @@ scaffold: scaffold-check ## Создать манифесты для новог�
 			'          image: $(_IMAGE)' \
 			'          envFrom:' \
 			'            - secretRef:' \
-			'                name: $(_NAME)-secrets' \
+			'                name: $(RESOURCE)-secrets' \
 			'          imagePullPolicy: IfNotPresent' \
 			> $(TARGET_PATH)/deployment.yaml ;; \
 		esac; \
@@ -276,7 +276,7 @@ scaffold: scaffold-check ## Создать манифесты для новог�
 			'  - deployment.yaml' \
 			'  - service.yaml' \
 			'  - ingress.yaml' \
-			'  - secrets/$(_NAME)-sealed.yaml' \
+			'  - secrets/$(RESOURCE)-sealed.yaml' \
 			'images:' \
 			'  - name: $(_IMAGE)' \
 			'    newTag: latest' \
@@ -287,7 +287,7 @@ scaffold: scaffold-check ## Создать манифесты для новог�
 			'kind: Kustomization' \
 			'resources:' \
 			'  - deployment.yaml' \
-			'  - secrets/$(_NAME)-secrets-sealed.yaml' \
+			'  - secrets/$(RESOURCE)-sealed.yaml' \
 			'images:' \
 			'  - name: $(_IMAGE)' \
 			'    newTag: latest' \

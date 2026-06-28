@@ -19,7 +19,7 @@ spec:
               image: postgres:17-alpine
               envFrom:
                 - secretRef:
-                    name: week-infra-postgresql
+                    name: postgresql-secrets
               command:
                 - /bin/sh
                 - -c
