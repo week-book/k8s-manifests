@@ -6,4 +6,4 @@ resources:
   - service.yaml
   - backup-pvc.yaml
   - backup-cronjob.yaml
-  - secrets/week-infra-redis-sealed.yaml
+  - secrets/redis-sealed.yaml

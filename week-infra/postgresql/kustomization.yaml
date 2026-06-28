@@ -6,4 +6,4 @@ resources:
   - service.yaml
   - backup-pvc.yaml
   - backup-cronjob.yaml
-  - secrets/week-infra-postgresql-sealed.yaml
+  - secrets/postgresql-sealed.yaml
