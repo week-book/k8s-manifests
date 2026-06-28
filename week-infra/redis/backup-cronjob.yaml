@@ -19,7 +19,7 @@ spec:
               image: redis:7-alpine
               envFrom:
                 - secretRef:
-                    name: week-infra-redis
+                    name: redis-secrets
               command:
                 - sh
                 - -c
