@@ -4,7 +4,4 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
-images:
-  - name: ghcr.io/week-book/placeholder
-    newTag: latest
-
+  - configmap.yaml
