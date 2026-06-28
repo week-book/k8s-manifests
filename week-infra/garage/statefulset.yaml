@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: garage
+  namespace: week-infra
+  labels:
+    app: garage
+spec:
+  serviceName: garage
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage
+  template:
+    metadata:
+      labels:
+        app: garage
+    spec:
+      containers:
+        - name: garage
+          image: dxflrs/garage:v2.3.0
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: s3
+              containerPort: 3900
+            - name: rpc
+              containerPort: 3901
+            - name: admin
+              containerPort: 3903
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+
+          volumeMounts:
+            - name: config
+              mountPath: /etc/garage.toml
+              subPath: garage.toml
+              readOnly: true
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
+            - name: data
+              mountPath: /var/lib/garage
+
+          # Garage поднимается без встроенного HTTP healthcheck-эндпоинта на S3 API,
+          # поэтому проверяем через TCP-доступность порта.
+          readinessProbe:
+            tcpSocket:
+              port: 3900
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            tcpSocket:
+              port: 3900
+            initialDelaySeconds: 10
+            periodSeconds: 20
+
+      volumes:
+        - name: config
+          configMap:
+            name: garage-config
+        - name: secrets
+          secret:
+            secretName: garage-secrets
+            defaultMode: 0600
+            items:
+              - key: RPC_SECRET
+                path: rpc_secret
+              - key: ADMIN_TOKEN
+                path: admin_token
+
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 10Gi
