@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: week-art
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: art-api
+  template:
+    metadata:
+      labels:
+        app: art-api
+    spec:
+      initContainers:
+        - name: migrate
+          image: migrate/migrate:v4.17.1
+          args:
+            - "-path=/migrations"
+            - "-database=$(DATABASE_URL)"
+            - "up"
+          envFrom:
+            - secretRef:
+                name: art-api-secrets
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrations
+      containers:
+        - name: api
+          image: ghcr.io/week-book/art-api
+          args:
+            - "-addr=:8080"
+            - "-data=/app/data/artworks.json"
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: art-api-secrets
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: artworks-data
+              mountPath: /app/data
+              readOnly: true
+      volumes:
+        - name: migrations
+          configMap:
+            name: api-migrations
+        - name: artworks-data
+          configMap:
+            name: artworks-data

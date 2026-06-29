@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: art-api
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+    nginx.ingress.kubernetes.io/forwarded-for-header: "CF-Connecting-IP"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.week-art.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: art-api
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - api.week-art.ru
+      secretName: art-api-tls
