@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - secrets/art-api-sealed.yaml
+  - artworks-configmap.yaml
+  - migrations-configmap.yaml
+images:
+  - name: ghcr.io/week-book/art-api
+    newTag: sha-4999ae18e785a5f7fdcc3ba6c465305947f298d9

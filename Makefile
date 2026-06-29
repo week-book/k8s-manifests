@@ -74,7 +74,7 @@ scaffold-check:
 scaffold: scaffold-check ## Создать манифесты для нового компонента (TYPE=frontend|backend|bot)
 	$(eval _PORT := $(or $(PORT),$(if $(filter frontend,$(TYPE)),3000,8080)))
 	$(eval _IMAGE := ghcr.io/week-book/$(RESOURCE))
-	$(eval _NAME := $(PARENT)-$(RESOURCE))
+	$(eval _NAME := $(RESOURCE))
 	@echo ""
 	@echo "── Scaffold: $(TYPE) · $(PARENT)/$(RESOURCE) ────────────────────"
 
