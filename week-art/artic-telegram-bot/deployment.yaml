@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: artic-telegram-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: artic-telegram-bot
+  template:
+    metadata:
+      labels:
+        app: artic-telegram-bot
+    spec:
+      containers:
+        - name: artic-telegram-bot
+          image: ghcr.io/week-book/artic-telegram-bot
+          envFrom:
+            - secretRef:
+                name: artic-telegram-bot-secrets
+          imagePullPolicy: IfNotPresent
