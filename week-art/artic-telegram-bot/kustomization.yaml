@@ -5,4 +5,4 @@ resources:
   - secrets/artic-telegram-bot-sealed.yaml
 images:
   - name: ghcr.io/week-book/artic-telegram-bot
-    newTag: latest
+    newTag: sha-b770700611e9c6f3efb224cfbf135d9fc48585b4
