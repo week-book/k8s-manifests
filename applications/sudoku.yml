@@ -13,8 +13,10 @@ spec:
     path: sudoku
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: sudoku
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
