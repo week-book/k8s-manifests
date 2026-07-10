@@ -18,4 +18,11 @@ spec:
           envFrom:
             - secretRef:
                 name: artic-telegram-bot-secrets
+          resources:
+            requests:
+              cpu: 15m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 96Mi
           imagePullPolicy: IfNotPresent

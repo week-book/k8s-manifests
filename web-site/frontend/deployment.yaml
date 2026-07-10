@@ -17,6 +17,13 @@ spec:
           image: ghcr.io/week-book/web-site-frontend
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: 30m
+              memory: 64Mi
+            limits:
+              cpu: 150m
+              memory: 256Mi
           livenessProbe:
             httpGet:
               path: /
