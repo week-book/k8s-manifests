@@ -22,12 +22,12 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       name: garage-secrets
-                      key: KEY_ID
+                      key: GARAGE_KEY_ID
                 - name: GARAGE_SECRET_KEY
                   valueFrom:
                     secretKeyRef:
                       name: garage-secrets
-                      key: SECRET_KEY
+                      key: GARAGE_SECRET_KEY
               command:
                 - sh
                 - -c
