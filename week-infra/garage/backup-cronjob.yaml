@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: garage-backup
+  namespace: week-infra
+spec:
+  schedule: "0 3 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: garage-mirror
+              image: minio/mc:latest
+              env:
+                - name: GARAGE_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: garage-secrets
+                      key: KEY_ID
+                - name: GARAGE_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: garage-secrets
+                      key: SECRET_KEY
+              command:
+                - sh
+                - -c
+                - |
+                  set -e
+                  mc alias set src http://garage:3900 "$GARAGE_KEY_ID" "$GARAGE_SECRET_KEY"
+                  STAMP=$(date +%Y-%m-%d_%H-%M-%S)
+                  mkdir -p /backup/mirror
+                  mc mirror --overwrite --remove src /backup/mirror
+                  tar -czf "/backup/garage-${STAMP}.tar.gz" -C /backup/mirror .
+                  echo "Snapshot done: $(ls -lh /backup/garage-${STAMP}.tar.gz)"
+                  cd /backup
+                  ls -1t garage-*.tar.gz | tail -n +8 | xargs -r rm -f
+                  echo "Remaining backups:"
+                  ls -lh /backup
+              volumeMounts:
+                - name: backup-storage
+                  mountPath: /backup
+          volumes:
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: garage-backup
