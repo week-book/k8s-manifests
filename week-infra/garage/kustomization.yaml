@@ -6,4 +6,6 @@ resources:
   - statefulset.yaml
   - service.yaml
   - ingress.yaml
+  - backup-pvc.yaml
+  - backup-cronjob.yaml
   - secrets/garage-sealed.yaml
