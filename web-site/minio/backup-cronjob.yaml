@@ -27,16 +27,15 @@ spec:
                   set -e
                   mc alias set src http://minio:9000 "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
                   STAMP=$(date +%Y-%m-%d_%H-%M-%S)
-                  mkdir -p /backup/mirror
-                  for BUCKET in posts week-art; do
-                    mc mirror --overwrite "src/${BUCKET}" "/backup/mirror/${BUCKET}"
-                  done
-                  tar -czf "/backup/minio-${STAMP}.tar.gz" -C /backup/mirror .
-                  rm -rf /backup/mirror
-                  echo "Snapshot done: $(ls -lh /backup/minio-${STAMP}.tar.gz)"
+                  DEST="/backup/minio-${STAMP}"
+                  mkdir -p "$DEST"
+                  mc mirror --overwrite src "$DEST"
+                  echo "Snapshot done: $(du -sh $DEST)"
                   cd /backup
-                  ls -1t minio-*.tar.gz | tail -n +8 | xargs -r rm -f
-             volumeMounts:
+                  ls -1dt minio-*/ | tail -n +8 | xargs -r rm -rf
+                  echo "Remaining backups:"
+                  ls -lh /backup
+              volumeMounts:
                 - name: backup-storage
                   mountPath: /backup
           volumes:
