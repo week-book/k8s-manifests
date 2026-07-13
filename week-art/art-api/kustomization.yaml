@@ -9,4 +9,4 @@ resources:
   - migrations-configmap.yaml
 images:
   - name: ghcr.io/week-book/art-api
-    newTag: sha-4999ae18e785a5f7fdcc3ba6c465305947f298d9
+    newTag: sha-b595bcccc843329e27a390d7d394a1be8a25972f
