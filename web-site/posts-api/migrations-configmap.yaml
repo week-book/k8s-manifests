@@ -1,0 +1,84 @@
+apiVersion: v1
+data:
+  0001_init.down.sql: |
+    BEGIN;
+
+    DROP TABLE IF EXISTS post_views;
+    DROP TABLE IF EXISTS posts;
+
+    COMMIT;
+  0001_init.up.sql: |
+    -- Sprint 2 — posts-api initial schema
+    -- Source of truth per book-api-architecture.md. Runs against the platform PostgreSQL
+    -- instance (postgresql.week-infra.svc.cluster.local), schema/migrations owned by this project.
+
+    BEGIN;
+
+    CREATE TABLE IF NOT EXISTS posts (
+        slug          TEXT PRIMARY KEY,
+        filename      TEXT NOT NULL UNIQUE,
+        title         TEXT NOT NULL,
+        date          DATE NOT NULL,
+        excerpt       TEXT NOT NULL DEFAULT '',
+        tags          TEXT[] NOT NULL DEFAULT '{}',
+        short_id      TEXT UNIQUE,
+        published_at  TIMESTAMPTZ NOT NULL,
+        notified_at   TIMESTAMPTZ,
+        cover         TEXT,                 -- lost today in CLI (see cli.md), first-class here
+        cluster       TEXT,                 -- reserved; assigned manually in the content project
+        views         BIGINT NOT NULL DEFAULT 0
+    );
+
+    -- GET /posts/by-short-id/:short_id — redirect-service replacement path
+    CREATE INDEX IF NOT EXISTS idx_posts_short_id ON posts (short_id) WHERE short_id IS NOT NULL;
+
+    -- GET /posts/:slug/related — tag intersection lookups
+    CREATE INDEX IF NOT EXISTS idx_posts_tags ON posts USING GIN (tags);
+
+    -- related-by-cluster becomes primary sort criterion once populated (see tech debt #4)
+    CREATE INDEX IF NOT EXISTS idx_posts_cluster ON posts (cluster) WHERE cluster IS NOT NULL;
+
+    -- default feed ordering
+    CREATE INDEX IF NOT EXISTS idx_posts_date ON posts (date DESC);
+
+    -- Dedup table for POST /posts/:slug/views (see "Просмотры" in api-architecture.md)
+    CREATE TABLE IF NOT EXISTS post_views (
+        slug          TEXT NOT NULL REFERENCES posts(slug) ON DELETE CASCADE,
+        client_key    TEXT NOT NULL,
+        last_seen_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+        PRIMARY KEY (slug, client_key)
+    );
+
+    -- TTL lookups (12–24h candidate, see open question #7): index on recency
+    CREATE INDEX IF NOT EXISTS idx_post_views_last_seen ON post_views (last_seen_at);
+
+    COMMIT;
+  0002_create_api_keys.down.sql: |
+    DROP TABLE IF EXISTS api_keys;
+  0002_create_api_keys.up.sql: |+
+    -- api_keys хранит только SHA-256 хеш ключа, никогда сам ключ (используется пакетом
+    -- github.com/week-book/apikeys, см. main.go — apikeys.NewPostgresStore/NewMiddleware).
+    -- pgcrypto нужен только для gen_random_uuid() — если в образе postgres его нет,
+    -- можно заменить на uuid-ossp или генерировать UUID в Go перед INSERT.
+    CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+    CREATE TABLE IF NOT EXISTS api_keys (
+        id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        key_hash      TEXT NOT NULL UNIQUE,
+        label         TEXT NOT NULL,
+        created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+        last_used_at  TIMESTAMPTZ,
+        revoked_at    TIMESTAMPTZ
+    );
+
+    -- Поиск по хешу — путь горячего запроса (каждый авторизованный HTTP-запрос).
+    -- UNIQUE на key_hash уже создаёт btree-индекс, отдельный CREATE INDEX не нужен.
+
+    -- Частичный индекс на активные ключи — ускоряет листинг ключей, фильтрующий
+    -- по revoked_at IS NULL.
+    CREATE INDEX IF NOT EXISTS idx_api_keys_active ON api_keys (created_at) WHERE revoked_at IS NULL;
+
+kind: ConfigMap
+metadata:
+  name: posts-api-migrations
+  namespace: web-site

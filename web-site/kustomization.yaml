@@ -4,4 +4,5 @@ resources:
   - namespace.yaml
   - frontend
   - minio
+  - posts-api
   - redirect
