@@ -7,4 +7,4 @@ resources:
   - secrets/posts-api-sealed.yaml
 images:
   - name: ghcr.io/week-book/posts-api
-    newTag: latest
+    newTag: sha-77237b65081a472f4e88412dd569afcbb92cf358
