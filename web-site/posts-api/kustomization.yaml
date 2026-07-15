@@ -5,6 +5,7 @@ resources:
   - service.yaml
   - ingress.yaml
   - secrets/posts-api-sealed.yaml
+  - migrations-configmap.yaml
 images:
   - name: ghcr.io/week-book/posts-api
     newTag: sha-77237b65081a472f4e88412dd569afcbb92cf358
