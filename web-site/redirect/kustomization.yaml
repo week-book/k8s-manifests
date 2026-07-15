@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - service.yaml
+  - secrets/redirect-sealed.yaml
   - ingress.yaml
 images:
   - name: ghcr.io/week-book/redirect-service

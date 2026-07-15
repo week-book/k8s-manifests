@@ -17,11 +17,14 @@ spec:
           image: ghcr.io/week-book/redirect-service
           ports:
             - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: redirect-secrets
           env:
             - name: PORT
               value: "8080"
-            - name: JSON_URL
-              value: "https://s3.week-book.ru/posts/index.json"
+            - name: API_BASE_URL
+              value: "https://api.week-book.ru"
             - name: TARGET_BASE
               value: "https://week-book.ru/posts"
           resources:
