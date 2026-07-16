@@ -15,6 +15,9 @@ spec:
       containers:
         - name: frontend
           image: ghcr.io/week-book/web-site-frontend
+          envFrom:
+            - secretRef:
+                name: frontend-secrets
           ports:
             - containerPort: 3000
           resources:
