@@ -7,4 +7,4 @@ resources:
   - secrets/frontend-sealed.yaml
 images:
   - name: ghcr.io/week-book/web-site-frontend
-    newTag: sha-a683067415045cb65ad96064f6c69d67d0f96ded
+    newTag: sha-ca3591619024d84d836c83d7c0a25c2f8cd07df0
