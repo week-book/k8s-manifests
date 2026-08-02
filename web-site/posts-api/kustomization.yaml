@@ -8,4 +8,4 @@ resources:
   - migrations-configmap.yaml
 images:
   - name: ghcr.io/week-book/posts-api
-    newTag: sha-77237b65081a472f4e88412dd569afcbb92cf358
+    newTag: sha-d54fa73ee166432a8f37a1d911174d3604ea279a
