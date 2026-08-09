@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meditation-timer
+  namespace: web-site
+  labels:
+    app: meditation-timer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meditation-timer
+  template:
+    metadata:
+      labels:
+        app: meditation-timer
+    spec:
+      containers:
+        - name: meditation-timer
+          image: ghcr.io/week-book/meditation-timer:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: NITRO_PORT
+              value: "3000"
+            - name: NITRO_HOST
+              value: "0.0.0.0"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 20
