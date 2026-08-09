@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: meditation-timer
+  namespace: web-site
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - meditation.week-book.ru
+      secretName: meditation-timer-tls
+  rules:
+    - host: meditation.week-book.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: meditation-timer
+                port:
+                  number: 3000
