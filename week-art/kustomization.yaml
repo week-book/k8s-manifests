@@ -4,4 +4,3 @@ resources:
   - namespace.yaml
   - placeholder
   - art-api
-  - artic-telegram-bot
