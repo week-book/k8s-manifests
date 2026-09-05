@@ -6,4 +6,4 @@ resources:
   - ingress.yaml
 images:
   - name: ghcr.io/week-book/meditation-timer
-    newTag: sha-9a543378dcc5ce6486be094c67224ba0c000ba2e
+    newTag: sha-96a0853d9acaebec9e927f11cf670a7c5126fb77
