@@ -15,7 +15,7 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - cinema.week-book.ru
+        - cinema.week-infra.ru
       secretName: jellyfin-tls
   rules:
     - host: cinema.week-infra.ru
