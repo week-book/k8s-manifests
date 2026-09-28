@@ -1,0 +1,30 @@
+# Prune=false: после инцидента с MinIO PVC не должен удаляться ArgoCD
+# при смене namespace / удалении файла из git. Удаляется только руками.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-config
+  namespace: week-cinema
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-media
+  namespace: week-cinema
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: local-path
+  resources:
+    requests:
+      # диск ноды 70 ГБ — держи размер небольшим, фильмы съедают место быстро
+      storage: 20Gi
