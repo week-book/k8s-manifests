@@ -24,8 +24,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: jellyfin
-          # Закрепи актуальный стабильный патч-релиз с Docker Hub (jellyfin/jellyfin)
-          image: jellyfin/jellyfin:10.11.0
+          image: jellyfin/jellyfin:12.1
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -34,7 +33,7 @@ spec:
             - name: TZ
               value: "Europe/Moscow"
             - name: JELLYFIN_PublishedServerUrl
-              value: "https://cinema.week-book.ru"
+              value: "https://cinema.week-infra.ru"
           resources:
             requests:
               cpu: 100m
