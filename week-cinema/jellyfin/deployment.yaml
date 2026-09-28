@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  namespace: week-cinema
+  labels:
+    app: jellyfin
+spec:
+  replicas: 1
+  # RWO-тома + один экземпляр: старый под должен уйти до старта нового
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: jellyfin
+          # Закрепи актуальный стабильный патч-релиз с Docker Hub (jellyfin/jellyfin)
+          image: jellyfin/jellyfin:10.11.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8096
+          env:
+            - name: TZ
+              value: "Europe/Moscow"
+            - name: JELLYFIN_PublishedServerUrl
+              value: "https://cinema.week-book.ru"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 384Mi
+            limits:
+              # потолок CPU защищает остальные сервисы, если кто-то запустит транскодинг
+              cpu: "1500m"
+              memory: 1536Mi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+            - name: cache
+              mountPath: /cache
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            failureThreshold: 6
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: jellyfin-config
+        - name: media
+          persistentVolumeClaim:
+            claimName: jellyfin-media
+        - name: cache
+          emptyDir:
+            sizeLimit: 2Gi
